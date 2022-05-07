@@ -20,22 +20,23 @@ public class Run {
 
         //Для БД: SET GLOBAL time_zone = '+3:00';
 
-//        //Вариант 5
-//        //Выборка
-//
-//        List<Student> students = session.createQuery("FROM Student").list();
-//        for(Student student : students)
-//            System.out.println(student);
-//
-//        List<Specialty> specialties = session.createQuery("FROM Specialty").list();
-//        int sum = 0;
-//        for(Specialty specialty : specialties)
-//        {
-//            for(Group group : specialty.getGroups())
-//                sum += group.getStudents().stream().filter(student -> student.getStatus().equals("Зачислен")).toList().size();
-//            System.out.println(specialty.getName() + ": " + sum + " человек.");
-//            sum = 0;
-//        }
+        //Вариант 5
+        //Выборка
+        //1. Вывести таблицу: ФИО студента, название группы.
+        List<Student> students = session.createQuery("FROM Student").list();
+        for(Student student : students)
+            System.out.println(student);
+
+        //2.	Вывести сведения о количестве студентов, обучающихся по каждой специальности.
+        List<Specialty> specialties = session.createQuery("FROM Specialty").list();
+        int studs = 0;
+        for(Specialty specialty : specialties)
+        {
+            for(Group group : specialty.getGroups())
+                studs += group.getStudents().stream().filter(student -> student.getStatus().equals("Зачислен")).toList().size();
+            System.out.println(specialty.getName() + ": " + studs + " человек.");
+            studs = 0;
+        }
 
         //Update
         List<Group> groups = session.createQuery("FROM Group").list();
