@@ -147,9 +147,7 @@ public class Student implements java.io.Serializable {
     @Override
     public String toString() {
         return "ФИО: " + this.getSurname()+ " " + this.getName() + " " + this.getPatronymic() +
-                "\nНомер зачётки: " + this.getStudentNum() +
-                "\nГруппа: " + this.getGroup().getName() +
-                "\nДата обновления: " + this.getStatusDate() + "\n";
+                "\nГруппа: " + this.getGroup().getName();
     }
 }
 
