@@ -117,4 +117,10 @@ public class Group implements java.io.Serializable {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+    @Override
+    public String toString() {
+        return "Группа: " + this.getName() +
+                "\nЗачислена: " + this.getCreateDate();
+    }
 }
