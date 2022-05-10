@@ -24,6 +24,8 @@
         <mapping class="hiberlab.entity.Student"/>
         <mapping class="hiberlab.entity.Group"/>
         <mapping class="hiberlab.entity.Specialty"/>
+        <mapping class="hiberlab.entity.Lesson"/>
+
 
     </session-factory>
 </hibernate-configuration>
