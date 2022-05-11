@@ -20,53 +20,6 @@ public class Run {
 
         //Для БД: SET GLOBAL time_zone = '+3:00';
 
-//        //Вариант 1
-//        //Выборка
-//        //1. Вывести таблицу: ФИО студента, название группы.
-//        List<Student> students = session.createQuery("FROM Student").list();
-//        for(Student student : students)
-//            System.out.println(student);
-//
-//        //2.	Вывести сведения о количестве студентов, обучающихся по каждой специальности.
-//        List<Specialty> specialties = session.createQuery("FROM Specialty").list();
-//        int studs = 0;
-//        for(Specialty specialty : specialties)
-//        {
-//            for(Group group : specialty.getGroups())
-//                studs += group.getStudents().stream().filter(student -> student.getStatus().equals("Зачислен")).toList().size();
-//            System.out.println(specialty.getName() + ": " + studs + " человек.");
-//            studs = 0;
-//        }
-//        //Update
-//        //Установить статус «расформирована» для групп, сформированных более 4 лет назад,
-//        //у студентов данных групп установить статус «выпускник»
-//        //Примечание: не забудьте обновить также поля StatusDate.
-//        List<Group> groups = session.createQuery("FROM Group").list();
-//        Date curDate = new Date();
-//        for(Group group : groups)
-//        {
-//            if (curDate.getYear() - group.getCreateDate().getYear() > 4) {
-//                group.setStatus("Расформирована");
-//                group.setStatusDate(curDate);
-//                for (Student student : group.getStudents())
-//                {
-//                    student.setStatus("Выпускник");
-//                    student.setStatusDate(curDate);
-//                    session.update(student);
-//                }
-//                session.update(group);
-//            } else {
-//                group.setStatus("Сформирована");
-//                group.setStatusDate(curDate);
-//                for (Student student : group.getStudents())
-//                {
-//                    student.setStatus("Зачислен");
-//                    student.setStatusDate(curDate);
-//                    session.update(student);
-//                }
-//                session.update(group);
-//            }
-//        }
 
 
 //        //Вариант 3
@@ -89,12 +42,36 @@ public class Run {
 //            if(curDate.getYear() - student.getGroup().getCreateDate().getYear() > 4)
 //                System.out.println(student);
 //        }
-//
+
+        //Update
+        //Разделить группу, численностью более 25 человек на 2 отдельные группы
+        List<Group> groups = session.createQuery("FROM Group").list();
+        int stud = 0;
+
+        for (Group group : groups) {
+            System.out.println(group.getStudents().size());
+            if (group.getStudents().size() > 25)
+            {
+                Group group1 = new Group(group.getName() + "(1)", group.getCreateDate(), group.getPlanCode(), group.getStatus(), group.getSpecialty(), new Date());
+                Group group2 = new Group(group.getName() + "(2)", group.getCreateDate(), group.getPlanCode(), group.getStatus(), group.getSpecialty(), new Date());
+                session.save(group1);
+                session.save(group2);
+
+                for (Student student : group.getStudents()) {
+                    if (stud < 15) {
+                        student.setGroup(group1);
+                        stud++;
+                    }
+                    else student.setGroup(group2);
+                    session.update(student);
+                }
+                //session.delete(group);
+            }
+        }
 
         session.flush();
         transaction.commit();
         session.close();
         sf.close();
     }
-
 }

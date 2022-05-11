@@ -19,24 +19,19 @@ public class Group implements java.io.Serializable {
     private String status;
     private Date statusDate;
     private List<Student> students;
+    private List<Lesson> lesson;
 
     public Group() {
     }
 
 
-    public Group(String name, Date createDate, int planCode) {
-        this.name = name;
-        this.createDate = createDate;
-        this.planCode = planCode;
-    }
-
-    public Group(String name, Date createDate, int planCode, String status, Date statusDate, List<Student> students) {
+    public Group(String name, Date createDate, int planCode, String status, Specialty specialty, Date statusDate) {
         this.name = name;
         this.createDate = createDate;
         this.planCode = planCode;
         this.status = status;
+        this.specialty = specialty;
         this.statusDate = statusDate;
-        this.students = students;
     }
 
     @Id
@@ -116,6 +111,15 @@ public class Group implements java.io.Serializable {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "groups")
+    public List<Lesson> getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(List<Lesson> lesson) {
+        this.lesson = lesson;
     }
 
     @Override

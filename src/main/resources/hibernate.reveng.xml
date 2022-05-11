@@ -7,6 +7,7 @@
   <table-filter match-name="t_groups"/>
   <table-filter match-name="t_students"/>
   <table-filter match-name="t_specialties"/>
+  <table-filter match-name="t_lessons"/>
 </hibernate-reverse-engineering>
 
 <!--        http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd-->
